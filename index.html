@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRC REV POC1 — Daily Operations Brief — June 25, 2026</title>
+<style>
+  :root {
+    --bg: #06080c;
+    --card: #0f131c;
+    --border: #1a2230;
+    --text: #e4e8f0;
+    --text-muted: #6b7484;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59,130,246,0.12);
+    --green: #10b981;
+    --amber: #f59e0b;
+    --purple: #8b5cf6;
+    --cyan: #06b6d4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 36px; padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-left h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 4px; }
+  .hero-left .tagline { color: var(--text-muted); font-size: 15px; }
+  .hero-right { text-align: right; }
+  .pill {
+    display: inline-block; padding: 5px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
+    background: rgba(16,185,129,0.12); color: var(--green);
+    margin-bottom: 8px;
+  }
+  .meta { color: var(--text-muted); font-size: 13px; }
+  .meta strong { color: var(--text); }
+
+  /* Big 4 KPI */
+  .kpi-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 18px; margin-bottom: 36px;
+  }
+  .kpi-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .kpi-card:hover { border-color: #2a3a52; }
+  .kpi-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+  .kpi-card.fuel::after { background: var(--accent); }
+  .kpi-card.dist::after { background: var(--green); }
+  .kpi-card.time::after { background: var(--amber); }
+  .kpi-card.eff::after { background: var(--purple); }
+  .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .kpi-value { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
+  .kpi-unit { font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 3px; }
+  .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* Sections */
+  .section { margin-bottom: 36px; }
+  .section-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  }
+  .section-header h2 {
+    font-size: 17px; font-weight: 600; letter-spacing: -0.2px;
+  }
+  .section-header .line { flex: 1; height: 1px; background: var(--border); }
+
+  /* Grids */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px;
+  }
+  .panel h3 { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 18px; font-weight: 500; }
+
+  /* Donut */
+  .donut-row { display: flex; align-items: center; gap: 32px; }
+  .donut-svg { width: 170px; height: 170px; flex-shrink: 0; }
+  .legend { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .legend-item { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+  .dot { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+  .dot.idle { background: var(--amber); }
+  .dot.pto { background: var(--accent); }
+  .dot.driving { background: var(--green); }
+  .legend-pct { font-weight: 700; margin-left: auto; font-variant-numeric: tabular-nums; }
+  .legend-note { font-size: 13px; color: var(--text-muted); margin-left: 8px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; padding: 8px 0 10px; border-bottom: 1px solid var(--border); font-weight: 500; }
+  td { padding: 10px 0; border-bottom: 1px solid rgba(26,34,48,0.6); }
+  tr:last-child td { border-bottom: none; }
+  td.val { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+  td.lbl { color: var(--text); }
+  .highlight { color: var(--cyan); }
+
+  /* Trend mini-bars */
+  .trend-row { display: flex; gap: 12px; }
+  .trend-item { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .trend-item .t-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .trend-bars { display: flex; gap: 2px; align-items: flex-end; height: 40px; margin-bottom: 4px; }
+  .tbar { flex: 1; border-radius: 2px 2px 0 0; min-width: 5px; }
+  .tbar.fuel { background: var(--accent); }
+  .tbar.eff { background: var(--purple); }
+  .tbar.idle { background: var(--amber); }
+  .tbar.dist { background: var(--green); }
+  .trend-vals { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+
+  /* Capability callout */
+  .capability {
+    background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.04));
+    border: 1px solid rgba(59,130,246,0.2); border-radius: 12px;
+    padding: 20px 24px; margin-top: 36px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .cap-icon { font-size: 28px; }
+  .cap-text { font-size: 14px; line-height: 1.6; }
+  .cap-text strong { color: var(--cyan); }
+
+  /* Footer */
+  .footer {
+    margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--text-muted); font-size: 12px;
+  }
+  .footer .brand { font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+  .footer .brand span { color: var(--accent); }
+
+  @media (max-width: 900px) {
+    body { padding: 20px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .trend-row { flex-wrap: wrap; }
+    .hero { flex-direction: column; gap: 12px; }
+    .hero-right { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <h1>HRC REV POC1 — Daily Operations Brief</h1>
+      <p class="tagline">Hernco / Revive08 · Station 1983 · decarbX GHGsolve Platform</p>
+    </div>
+    <div class="hero-right">
+      <div class="pill">● Operational</div>
+      <p class="meta">Window: Jun 24 11:01 UTC → Jun 25 05:22 UTC (~18 hrs)<br>
+      <strong>Generated:</strong> Jun 25, 2026 09:15 EDT</p>
+    </div>
+  </div>
+
+  <!-- BIG 4 KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card fuel">
+      <div class="kpi-label">Fuel Consumed</div>
+      <div class="kpi-value">17.2<span class="kpi-unit">gal</span></div>
+      <div class="kpi-sub">65 L · 1,678 gal lifetime totalizer</div>
+    </div>
+    <div class="kpi-card dist">
+      <div class="kpi-label">Distance Traveled</div>
+      <div class="kpi-value">104<span class="kpi-unit">mi</span></div>
+      <div class="kpi-sub">168 km · 35,423 mi lifetime odometer</div>
+    </div>
+    <div class="kpi-card time">
+      <div class="kpi-label">Engine Runtime</div>
+      <div class="kpi-value">5.0<span class="kpi-unit">hrs</span></div>
+      <div class="kpi-sub">300 min · 3,809 hrs lifetime</div>
+    </div>
+    <div class="kpi-card eff">
+      <div class="kpi-label">Fuel Economy</div>
+      <div class="kpi-value">6.7<span class="kpi-unit">mpg</span></div>
+      <div class="kpi-sub">0.46 L/km · 2.86 km/L</div>
+    </div>
+  </div>
+
+  <!-- DUTY CYCLE -->
+  <div class="section">
+    <div class="section-header"><h2>Duty Cycle Breakdown</h2><span class="line"></span></div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Operating Mode Distribution</h3>
+        <div class="donut-row">
+          <svg class="donut-svg" viewBox="0 0 170 170">
+            <circle cx="85" cy="85" r="68" fill="none" stroke="#1a2230" stroke-width="26"/>
+            <!-- Idle 35.8% · PTO 20.3% · Driving 43.9% -->
+            <circle cx="85" cy="85" r="68" fill="none" stroke="#f59e0b" stroke-width="26"
+              stroke-dasharray="153.0 274.3" stroke-dashoffset="0" transform="rotate(-90 85 85)"/>
+            <circle cx="85" cy="85" r="68" fill="none" stroke="#3b82f6" stroke-width="26"
+              stroke-dasharray="86.7 340.6" stroke-dashoffset="-153.0" transform="rotate(-90 85 85)"/>
+            <circle cx="85" cy="85" r="68" fill="none" stroke="#10b981" stroke-width="26"
+              stroke-dasharray="187.6 239.7" stroke-dashoffset="-239.7" transform="rotate(-90 85 85)"/>
+            <text x="85" y="82" text-anchor="middle" fill="#e4e8f0" font-size="15" font-weight="700">5.0</text>
+            <text x="85" y="100" text-anchor="middle" fill="#6b7484" font-size="11">engine hrs</text>
+          </svg>
+          <div class="legend">
+            <div class="legend-item"><span class="dot idle"></span> Idle <span class="legend-pct">35.8%</span><span class="legend-note">~1.8 hrs</span></div>
+            <div class="legend-item"><span class="dot pto"></span> PTO Active <span class="legend-pct">20.3%</span><span class="legend-note">~1.0 hrs</span></div>
+            <div class="legend-item"><span class="dot driving"></span> Driving <span class="legend-pct">43.9%</span><span class="legend-note">~2.2 hrs</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Speed Analysis</h3>
+        <table>
+          <tr><th>Speed Range</th><th style="text-align:right;">Readings</th><th style="text-align:right;">Share</th></tr>
+          <tr><td class="lbl">0 mph (stopped)</td><td class="val">238</td><td class="val">36.1%</td></tr>
+          <tr><td class="lbl">0–18 mph</td><td class="val">224</td><td class="val">34.0%</td></tr>
+          <tr><td class="lbl">18–37 mph</td><td class="val">50</td><td class="val">7.6%</td></tr>
+          <tr><td class="lbl">37–56 mph</td><td class="val">45</td><td class="val">6.8%</td></tr>
+          <tr><td class="lbl">56+ mph</td><td class="val">102</td><td class="val">15.5%</td></tr>
+        </table>
+        <div style="margin-top:16px; padding:12px; background:rgba(6,182,212,0.06); border-radius:8px; font-size:13px; color:var(--text-muted);">
+          Max speed: <strong style="color:var(--text);">65 mph</strong> &nbsp;·&nbsp;
+          Avg moving speed: <strong style="color:var(--text);">29 mph</strong> &nbsp;·&nbsp;
+          659 ignition-on readings
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUEL & ENGINE -->
+  <div class="section">
+    <div class="section-header"><h2>Fuel & Engine Performance</h2><span class="line"></span></div>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Consumption Metrics</h3>
+        <table>
+          <tr><th>Metric</th><th style="text-align:right;">Value</th></tr>
+          <tr><td class="lbl">Interval fuel consumed</td><td class="val">17.2 gal <span style="color:var(--text-muted);font-weight:400;">(65 L)</span></td></tr>
+          <tr><td class="lbl">Fuel per engine hour</td><td class="val">3.4 gal/hr <span style="color:var(--text-muted);font-weight:400;">(13.0 L/hr)</span></td></tr>
+          <tr><td class="lbl">Fuel per mile</td><td class="val">0.16 gal/mi <span style="color:var(--text-muted);font-weight:400;">(0.39 L/km)</span></td></tr>
+          <tr><td class="lbl">Engine fuel rate (avg)</td><td class="val">3.2 gal/hr <span style="color:var(--text-muted);font-weight:400;">(12.3 L/hr)</span></td></tr>
+          <tr><td class="lbl">Engine fuel rate (peak)</td><td class="val">18.8 gal/hr <span style="color:var(--text-muted);font-weight:400;">(71.2 L/hr)</span></td></tr>
+          <tr><td class="lbl">Lifetime fuel</td><td class="val">1,678 gal <span style="color:var(--text-muted);font-weight:400;">(6,353 L)</span></td></tr>
+        </table>
+      </div>
+      <div class="panel">
+        <h3>Engine & PTO</h3>
+        <table>
+          <tr><th>Metric</th><th style="text-align:right;">Value</th></tr>
+          <tr><td class="lbl">Engine runtime (interval)</td><td class="val">5.0 hrs <span style="color:var(--text-muted);font-weight:400;">(300 min)</span></td></tr>
+          <tr><td class="lbl">PTO engaged</td><td class="val">134 readings <span style="color:var(--text-muted);font-weight:400;">(20.3%)</span></td></tr>
+          <tr><td class="lbl">Max RPM</td><td class="val">1,666</td></tr>
+          <tr><td class="lbl">Average RPM</td><td class="val">1,052</td></tr>
+          <tr><td class="lbl">Idle events</td><td class="val">238 <span style="color:var(--text-muted);font-weight:400;">(35.8% of time)</span></td></tr>
+          <tr><td class="lbl">Lifetime engine hours</td><td class="val">3,809 hrs</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-DAY TREND -->
+  <div class="section">
+    <div class="section-header"><h2>3-Day Trend</h2><span class="line"></span></div>
+    <div class="trend-row">
+      <div class="trend-item">
+        <div class="t-label">Fuel / Day</div>
+        <div class="trend-bars">
+          <div class="tbar fuel" style="height:77%;" title="Jun 22: 15.1 gal"></div>
+          <div class="tbar fuel" style="height:100%;" title="Jun 23: 19.5 gal"></div>
+          <div class="tbar fuel" style="height:88%;" title="Jun 24: 17.2 gal"></div>
+        </div>
+        <div class="trend-vals"><span>15.1</span><span>19.5</span><span>17.2 gal</span></div>
+      </div>
+      <div class="trend-item">
+        <div class="t-label">Fuel Economy</div>
+        <div class="trend-bars">
+          <div class="tbar eff" style="height:67%;" title="Jun 22: 6.0 mpg"></div>
+          <div class="tbar eff" style="height:100%;" title="Jun 23: 9.1 mpg"></div>
+          <div class="tbar eff" style="height:74%;" title="Jun 24: 6.7 mpg"></div>
+        </div>
+        <div class="trend-vals"><span>6.0</span><span>9.1</span><span>6.7 mpg</span></div>
+      </div>
+      <div class="trend-item">
+        <div class="t-label">Idle Time</div>
+        <div class="trend-bars">
+          <div class="tbar idle" style="height:100%;" title="Jun 22: 53%"></div>
+          <div class="tbar idle" style="height:60%;" title="Jun 23: 32%"></div>
+          <div class="tbar idle" style="height:67%;" title="Jun 24: 36%"></div>
+        </div>
+        <div class="trend-vals"><span>53%</span><span>32%</span><span>36%</span></div>
+      </div>
+      <div class="trend-item">
+        <div class="t-label">Distance</div>
+        <div class="trend-bars">
+          <div class="tbar dist" style="height:67%;" title="Jun 23: 105 mi"></div>
+          <div class="tbar dist" style="height:100%;" title="Jun 23: 156 mi"></div>
+          <div class="tbar dist" style="height:67%;" title="Jun 24: 104 mi"></div>
+        </div>
+        <div class="trend-vals"><span>—</span><span>156</span><span>104 mi</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT WE TRACK -->
+  <div class="section">
+    <div class="section-header"><h2>Daily Visibility — What We Measure</h2><span class="line"></span></div>
+    <div class="grid-3">
+      <div class="panel" style="text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">🛻</div>
+        <h3 style="text-align:center;margin-bottom:10px;">Operations</h3>
+        <table>
+          <tr><td class="lbl" style="font-size:13px;">Engine runtime</td><td class="val" style="font-size:13px;">5.0 hrs</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">PTO engagement</td><td class="val" style="font-size:13px;">20.3%</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Idle percentage</td><td class="val" style="font-size:13px;">35.8%</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Ignition cycles</td><td class="val" style="font-size:13px;">1 start</td></tr>
+        </table>
+      </div>
+      <div class="panel" style="text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">⛽</div>
+        <h3 style="text-align:center;margin-bottom:10px;">Fuel</h3>
+        <table>
+          <tr><td class="lbl" style="font-size:13px;">Daily consumption</td><td class="val" style="font-size:13px;">17.2 gal</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Fuel economy</td><td class="val" style="font-size:13px;">6.7 mpg</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Avg fuel rate</td><td class="val" style="font-size:13px;">3.2 gal/hr</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Peak fuel rate</td><td class="val" style="font-size:13px;">18.8 gal/hr</td></tr>
+        </table>
+      </div>
+      <div class="panel" style="text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px;">📡</div>
+        <h3 style="text-align:center;margin-bottom:10px;">Connectivity</h3>
+        <table>
+          <tr><td class="lbl" style="font-size:13px;">Cellular uptime</td><td class="val" style="font-size:13px;">99.8%</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Satellite uptime</td><td class="val" style="font-size:13px;">99.8%</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Data points</td><td class="val" style="font-size:13px;">665</td></tr>
+          <tr><td class="lbl" style="font-size:13px;">Telemetry gaps</td><td class="val" style="font-size:13px;color:var(--green);">0</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPABILITY CALLOUT -->
+  <div class="capability">
+    <div class="cap-icon">🎯</div>
+    <div class="cap-text">
+      <strong>decarbX GHGsolve delivers this operational picture every day — automatically.</strong><br>
+      From raw telemetry to an executive-ready brief: fuel consumption, duty cycle, idle time, PTO utilization, distance, engine load, speed profiles, and fleet-wide comparisons. Same visibility across every asset. No spreadsheets, no manual pulls. Your operations, quantified.
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="brand">decarb<span>X</span> · GHGsolve Platform</div>
+    <div>Station 1983 · HRC REV POC1 · Revive08</div>
+    <div>Confidential — Prepared for Hernco Operations Review</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRC REV POC1 — Operations Brief — v1.2 — June 25, 2026</title>
+<title>HRC REV POC1 — Operations Brief — v1.3 — June 25, 2026</title>
 <style>
   :root {
     --bg: #06080c;
@@ -223,11 +223,77 @@
     display: flex; flex-direction: column; gap: 4px;
   }
 
+  /* PTO Fuel Drivers (v1.3) */
+  .pto-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 18px; margin-bottom: 12px;
+  }
+  .pto-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px;
+    position: relative; overflow: hidden;
+    cursor: pointer; width: 100%; text-align: left;
+    font-family: inherit; color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .pto-card:hover { border-color: #2a3a52; box-shadow: 0 0 0 1px rgba(139,92,246,0.08); }
+  .pto-card:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+  .pto-card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 14px 14px 0 0; background: var(--purple);
+  }
+  .pto-card .pto-label {
+    font-size: 11px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .pto-card .pto-value {
+    font-size: 40px; font-weight: 700;
+    letter-spacing: -1.5px; line-height: 1;
+  }
+  .pto-card .pto-unit {
+    font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 3px;
+  }
+  .pto-card .pto-context {
+    font-size: 12px; color: var(--text-muted); margin-top: 6px;
+  }
+  .pto-card .pto-quality {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px;
+  }
+  .pto-card .pto-quality .q-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+  .pto-card .pto-quality .q-dot.low { background: var(--amber); }
+  .pto-card .pto-quality .q-text { color: var(--text-muted); }
+  .pto-card .pto-baseline {
+    margin-top: 6px; font-size: 11px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pto-card .pto-hint {
+    margin-top: 10px; font-size: 10px; color: #3e4555;
+    display: flex; align-items: center; gap: 4px;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .pto-card:hover .pto-hint { opacity: 1; }
+
+  .pto-caveat {
+    margin-top: 12px; padding: 10px 16px;
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.12);
+    border-radius: 8px;
+    font-size: 11px; color: var(--amber);
+    line-height: 1.5;
+  }
+
   @media (max-width: 900px) {
     body { padding: 20px; }
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .metric-row { grid-template-columns: repeat(2, 1fr); }
     .quality-grid { grid-template-columns: 1fr; }
+    .pto-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -384,6 +450,56 @@
   </div>
 </div>
 
+<!-- PTO Fuel Drivers (v1.3) -->
+<div class="section">
+  <div class="section-header">
+    <div class="dot" style="background:var(--purple)"></div>
+    <h2>PTO Fuel Drivers</h2>
+  </div>
+  <div class="pto-grid">
+    <!-- Fuel per PTO Hour -->
+    <button class="pto-card" data-metric="fuel-per-pto-hour" aria-expanded="false" aria-label="Fuel per PTO Hour — click for analysis">
+      <div class="pto-label">
+        Fuel per PTO Hour
+        <span class="q-dot low" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" title="CAN-only fuel estimate — IFM sensors non-functional"></span>
+      </div>
+      <div class="pto-value">~3.2<span class="pto-unit">gal/PTO-hr</span></div>
+      <div class="pto-context">1.4 PTO hrs today · est. 4.5 gal PTO fuel</div>
+      <div class="pto-quality">
+        <span class="q-dot low"></span>
+        <span class="q-text">CAN-only fuel estimate — IFM flow sensors non-functional</span>
+      </div>
+      <div class="pto-baseline">
+        <span>vs 30-day baseline</span>
+        <span style="color:var(--text-muted)">— baseline building (3 of 5 days)</span>
+      </div>
+      <div class="pto-hint">▶ Click for trend &amp; analysis</div>
+    </button>
+
+    <!-- Fuel per PTO Turn -->
+    <button class="pto-card" data-metric="fuel-per-pto-turn" aria-expanded="false" aria-label="Fuel per PTO Turn — click for analysis">
+      <div class="pto-label">
+        Fuel per PTO Turn
+        <span class="q-dot low" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" title="CAN-only fuel estimate — IFM sensors non-functional"></span>
+      </div>
+      <div class="pto-value">~1.8<span class="pto-unit">gal/turn</span></div>
+      <div class="pto-context">~4 PTO cycles today · ~7.2 gal total PTO fuel</div>
+      <div class="pto-quality">
+        <span class="q-dot low"></span>
+        <span class="q-text">CAN-only — turn detection based on PTO state transitions</span>
+      </div>
+      <div class="pto-baseline">
+        <span>vs 30-day baseline</span>
+        <span style="color:var(--text-muted)">— baseline building (3 of 5 days required)</span>
+      </div>
+      <div class="pto-hint">▶ Click for cycle breakdown &amp; analysis</div>
+    </button>
+  </div>
+  <div class="pto-caveat">
+    ⚠️ PTO fuel metrics are preliminary estimates based on engine CAN bus data (ST910x). IFM SU6030 flow sensors are non-functional — supply/return flow, fuel temperature delta, and net fuel flow cannot be validated. Values are approximate and should not be used for billing or compliance reporting. Baseline is building; status labels require a minimum of 5 PTO-active days.
+  </div>
+</div>
+
 <!-- Data Quality -->
 <div class="section">
   <div class="section-header">
@@ -412,7 +528,7 @@
 <!-- Footer -->
 <div class="footer">
   <div class="footer-col">
-    <div>Generated by decarbX GHGsolve AI · v1.2 · 2026-06-25 18:00 UTC</div>
+    <div>Generated by decarbX GHGsolve AI · v1.3 · 2026-06-25 19:00 UTC</div>
     <div>Station 1983 (HRC REV POC1) · Engine CAN bus data via ST910x</div>
   </div>
   <div class="footer-col" style="text-align:right">

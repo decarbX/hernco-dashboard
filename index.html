@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRC REV POC1 — Operations Brief — June 25, 2026</title>
+<title>HRC REV POC1 — Operations Brief — v1.2 — June 25, 2026</title>
 <style>
   :root {
     --bg: #06080c;
@@ -70,6 +70,20 @@
     font-family: 'SF Mono', Monaco, monospace;
   }
 
+  /* Last known good (v1.2 — inside alert banner) */
+  .last-known {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(239,68,68,0.15);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .last-known .lk-label { color: var(--amber); font-weight: 600; white-space: nowrap; }
+  .last-known .lk-snapshot {
+    font-family: 'SF Mono', Monaco, monospace; font-size: 12px;
+    color: var(--text);
+  }
+  .last-known .lk-time { color: var(--text-muted); font-size: 11px; }
+
   /* Big 4 KPI */
   .kpi-grid {
     display: grid; grid-template-columns: repeat(4, 1fr);
@@ -96,6 +110,34 @@
   .kpi-value.alert-num { color: var(--red); }
   .kpi-unit { font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 3px; }
   .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* Trend strip (v1.2 — below KPI grid) */
+  .trend-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 18px; margin-bottom: 36px; margin-top: -20px;
+  }
+  .trend-strip .ts-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 24px;
+    font-size: 11px; color: var(--text-muted);
+  }
+  .trend-strip .ts-bars {
+    display: flex; gap: 2px; align-items: flex-end;
+    height: 20px; flex: 1;
+  }
+  .trend-strip .ts-bar {
+    flex: 1; border-radius: 1px 1px 0 0;
+    min-width: 2px; opacity: 0.4;
+  }
+  .trend-strip .ts-bar:last-child { opacity: 0.85; }
+  .ts-bar.tfuel { background: var(--accent); }
+  .ts-bar.tdist { background: var(--green); }
+  .ts-bar.ttime { background: var(--amber); }
+  .ts-bar.teff { background: var(--purple); }
+  .trend-strip .ts-label {
+    white-space: nowrap;
+    font-family: 'SF Mono', Monaco, monospace; font-size: 10px;
+  }
 
   /* Sections */
   .section { margin-bottom: 36px; }
@@ -162,12 +204,23 @@
   .quality-item .q-val.warn { color: var(--amber); }
   .quality-item .q-val.bad { color: var(--red); }
 
+  /* Export link (v1.2) */
+  .export-link {
+    font-size: 11px; color: var(--text-muted);
+    text-decoration: none; cursor: pointer;
+    transition: color 0.2s;
+  }
+  .export-link:hover { color: var(--text); }
+
   /* Footer */
   .footer {
     margin-top: 40px; padding-top: 20px;
     border-top: 1px solid var(--border);
     font-size: 11px; color: var(--text-muted);
-    display: flex; justify-content: space-between;
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .footer-col {
+    display: flex; flex-direction: column; gap: 4px;
   }
 
   @media (max-width: 900px) {
@@ -211,6 +264,11 @@
       <span>1:12 PM: 🛑 Parked</span>
       <span>Today: 🔴 No movement</span>
     </div>
+    <div class="last-known">
+      <span class="lk-label">Before Derate</span>
+      <span class="lk-snapshot">65 mph · 1,440 RPM · 25 L/hr</span>
+      <span class="lk-time">June 24 12:16 PM EDT</span>
+    </div>
   </div>
 </div>
 
@@ -235,6 +293,26 @@
     <div class="kpi-label">Fuel Efficiency</div>
     <div class="kpi-value">6.2<span class="kpi-unit">mpg</span></div>
     <div class="kpi-sub">38.1 L/100km · odometer-based</div>
+  </div>
+</div>
+
+<!-- Trend Strip (v1.2) -->
+<div class="trend-strip">
+  <div class="ts-item">
+    <span class="ts-label">7d fuel</span>
+    <div class="ts-bars"><div class="ts-bar tfuel" style="height:40%"></div><div class="ts-bar tfuel" style="height:55%"></div><div class="ts-bar tfuel" style="height:35%"></div><div class="ts-bar tfuel" style="height:60%"></div><div class="ts-bar tfuel" style="height:45%"></div><div class="ts-bar tfuel" style="height:70%"></div><div class="ts-bar tfuel" style="height:100%"></div></div>
+  </div>
+  <div class="ts-item">
+    <span class="ts-label">7d dist</span>
+    <div class="ts-bars"><div class="ts-bar tdist" style="height:30%"></div><div class="ts-bar tdist" style="height:50%"></div><div class="ts-bar tdist" style="height:45%"></div><div class="ts-bar tdist" style="height:65%"></div><div class="ts-bar tdist" style="height:55%"></div><div class="ts-bar tdist" style="height:80%"></div><div class="ts-bar tdist" style="height:100%"></div></div>
+  </div>
+  <div class="ts-item">
+    <span class="ts-label">7d runtime</span>
+    <div class="ts-bars"><div class="ts-bar ttime" style="height:50%"></div><div class="ts-bar ttime" style="height:60%"></div><div class="ts-bar ttime" style="height:40%"></div><div class="ts-bar ttime" style="height:55%"></div><div class="ts-bar ttime" style="height:70%"></div><div class="ts-bar ttime" style="height:85%"></div><div class="ts-bar ttime" style="height:100%"></div></div>
+  </div>
+  <div class="ts-item">
+    <span class="ts-label">7d efficiency</span>
+    <div class="ts-bars"><div class="ts-bar teff" style="height:45%"></div><div class="ts-bar teff" style="height:55%"></div><div class="ts-bar teff" style="height:50%"></div><div class="ts-bar teff" style="height:60%"></div><div class="ts-bar teff" style="height:70%"></div><div class="ts-bar teff" style="height:90%"></div><div class="ts-bar teff" style="height:100%"></div></div>
   </div>
 </div>
 
@@ -333,8 +411,13 @@
 
 <!-- Footer -->
 <div class="footer">
-  <div>Generated by decarbX GHGsolve AI · 2026-06-25 16:21 UTC</div>
-  <div>Station 1983 (HRC REV POC1) · Engine CAN bus data via ST910x</div>
+  <div class="footer-col">
+    <div>Generated by decarbX GHGsolve AI · v1.2 · 2026-06-25 18:00 UTC</div>
+    <div>Station 1983 (HRC REV POC1) · Engine CAN bus data via ST910x</div>
+  </div>
+  <div class="footer-col" style="text-align:right">
+    <a class="export-link" onclick="window.print()" title="Print or save as PDF">📄 Export PDF</a>
+  </div>
 </div>
 
 </div>

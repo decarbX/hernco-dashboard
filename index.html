@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRC REV POC1 — Operations Brief — June 25, 2026</title>
+<title>HRC REV POC1 · Operations Brief · June 26, 2026</title>
 <style>
   :root {
     --bg: #06080c;
@@ -30,7 +30,6 @@
   }
   .container { max-width: 1280px; margin: 0 auto; }
 
-  /* Hero */
   .hero {
     display: flex; justify-content: space-between; align-items: flex-start;
     margin-bottom: 24px; padding-bottom: 24px;
@@ -44,36 +43,30 @@
     font-size: 12px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
     margin-bottom: 8px;
   }
-  .pill.alert {
-    background: rgba(239,68,68,0.15); color: var(--red);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
   .pill.ok { background: rgba(16,185,129,0.12); color: var(--green); }
+  .pill.pto { background: rgba(139,92,246,0.12); color: var(--purple); }
   .meta { color: var(--text-muted); font-size: 13px; }
   .meta strong { color: var(--text); }
 
-  /* Alert banner */
-  .alert-banner {
-    background: linear-gradient(135deg, rgba(239,68,68,0.10), rgba(239,68,68,0.04));
-    border: 1px solid rgba(239,68,68,0.25);
+  /* IFM status banner */
+  .status-banner {
+    background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(59,130,246,0.02));
+    border: 1px solid rgba(59,130,246,0.2);
     border-radius: 12px; padding: 20px 24px; margin-bottom: 28px;
-    display: flex; gap: 16px; align-items: flex-start;
   }
-  .alert-icon { font-size: 28px; flex-shrink: 0; }
-  .alert-content h3 { font-size: 16px; color: var(--red); margin-bottom: 6px; }
-  .alert-content p { color: var(--text-muted); font-size: 13px; line-height: 1.6; }
-  .alert-content .timeline { margin-top: 10px; }
-  .alert-content .timeline span {
-    display: inline-block; background: var(--card); border: 1px solid var(--border);
-    border-radius: 6px; padding: 4px 10px; font-size: 12px; margin-right: 8px; margin-bottom: 4px;
-    font-family: 'SF Mono', Monaco, monospace;
+  .status-banner h3 { font-size: 14px; color: var(--accent); margin-bottom: 12px; }
+  .status-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
   }
+  .status-item { font-size: 12px; }
+  .status-item .s-label { color: var(--text-muted); margin-bottom: 3px; }
+  .status-item .s-val { font-weight: 600; }
+  .s-val.good { color: var(--green); }
+  .s-val.warn { color: var(--amber); }
+  .s-val.info { color: var(--accent); }
 
-  /* Big 4 KPI */
   .kpi-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 18px; margin-bottom: 36px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px;
   }
   .kpi-card {
     background: var(--card); border: 1px solid var(--border);
@@ -90,30 +83,23 @@
   .kpi-card.dist::after { background: var(--green); }
   .kpi-card.time::after { background: var(--amber); }
   .kpi-card.eff::after { background: var(--purple); }
-  .kpi-card.alert-card::after { background: var(--red); }
   .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
   .kpi-value { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
-  .kpi-value.alert-num { color: var(--red); }
   .kpi-unit { font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 3px; }
   .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
-  /* Sections */
   .section { margin-bottom: 36px; }
   .section-header {
     display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
   }
-  .section-header h2 {
-    font-size: 16px; font-weight: 600; letter-spacing: -0.2px;
-  }
+  .section-header h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
   .section-header .dot {
     width: 8px; height: 8px; border-radius: 50%;
   }
   .dot.blue { background: var(--accent); }
   .dot.green { background: var(--green); }
   .dot.amber { background: var(--amber); }
-  .dot.red { background: var(--red); }
 
-  /* Duty cycle bar */
   .duty-bar {
     height: 36px; border-radius: 10px; overflow: hidden;
     display: flex; margin-bottom: 12px;
@@ -136,7 +122,6 @@
     width: 10px; height: 10px; border-radius: 3px; display: inline-block;
   }
 
-  /* Metric rows */
   .metric-row {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
   }
@@ -148,9 +133,8 @@
   .metric-item .val { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
   .metric-item .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-  /* Quality table */
   .quality-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
   }
   .quality-item {
     background: var(--card); border: 1px solid var(--border);
@@ -158,11 +142,30 @@
     display: flex; justify-content: space-between; align-items: center;
   }
   .quality-item .q-label { font-size: 13px; color: var(--text-muted); }
-  .quality-item .q-val { font-size: 20px; font-weight: 600; font-family: 'SF Mono', Monaco, monospace; }
-  .quality-item .q-val.warn { color: var(--amber); }
-  .quality-item .q-val.bad { color: var(--red); }
+  .quality-item .q-val { font-size: 18px; font-weight: 600; font-family: 'SF Mono', Monaco, monospace; }
+  .q-val.good { color: var(--green); }
+  .q-val.info { color: var(--accent); }
+  .q-val.warn { color: var(--amber); }
+  .q-val.bad { color: var(--red); }
 
-  /* Footer */
+  /* IFM detail table */
+  .ifm-table {
+    width: 100%; border-collapse: collapse; margin-top: 14px;
+    font-size: 12px;
+  }
+  .ifm-table th {
+    text-align: left; color: var(--text-muted); font-weight: 500;
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .ifm-table td {
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+  }
+  .ifm-table td:last-child { text-align: right; font-weight: 600; }
+  .ifm-table .ok { color: var(--green); }
+  .ifm-table .no { color: var(--red); }
+  .ifm-table .warn { color: var(--amber); }
+
   .footer {
     margin-top: 40px; padding-top: 20px;
     border-top: 1px solid var(--border);
@@ -175,6 +178,7 @@
     .kpi-grid { grid-template-columns: repeat(2, 1fr); }
     .metric-row { grid-template-columns: repeat(2, 1fr); }
     .quality-grid { grid-template-columns: 1fr; }
+    .status-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -185,31 +189,45 @@
 <div class="hero">
   <div class="hero-left">
     <h1>HRC REV POC1</h1>
-    <div class="tagline">Hernco Revive08 · Station 1983 · decarbX GHGsolve</div>
+    <div class="tagline">Hernco Revive08 · Station 1983 · GHGsolve Intelligence Platform</div>
   </div>
   <div class="hero-right">
-    <div class="pill alert">⚡ DERATE ACTIVE</div>
+    <div class="pill ok">BASELINE ACTIVE</div>
+    <div class="pill pto" style="margin-left:6px">PTO ACTIVE</div>
     <div class="meta">
-      <strong>Jun 25, 2026</strong> · 12:12 PM EDT<br>
-      Data: 665 readings over 18.1 hrs
+      <strong>Jun 26, 2026</strong> · 6:04 PM EDT<br>
+      Data: 28,188 readings over 12.0 hrs
     </div>
   </div>
 </div>
 
-<!-- Alert Banner -->
-<div class="alert-banner">
-  <div class="alert-icon">🔴</div>
-  <div class="alert-content">
-    <h3>Engine Derate — Asset Stationary Since June 24</h3>
-    <p>
-      The Revive08 experienced a sudden ECM-commanded derate yesterday at approximately <strong>12:33 PM EDT</strong> while operating at highway speed (65 mph). Speed dropped to a hard electronic cap at <strong>10.6 mph</strong> with RPM locked at 800. As of today, the asset remains <strong>parked and unable to move</strong> — ignition is on but the engine is reporting zero RPM, zero fuel rate, and zero speed.
-    </p>
-    <div class="timeline">
-      <span>12:16 PM: 65 mph highway</span>
-      <span>12:33 PM: ⬇ 5 mph</span>
-      <span>12:50 PM: 🔒 10.6 mph cap</span>
-      <span>1:12 PM: 🛑 Parked</span>
-      <span>Today: 🔴 No movement</span>
+<!-- IFM Status Banner -->
+<div class="status-banner">
+  <h3>Sensor & Data Source Status</h3>
+  <div class="status-grid">
+    <div class="status-item">
+      <div class="s-label">CAN Bus (ST910x)</div>
+      <div class="s-val good">Primary source :  validated</div>
+    </div>
+    <div class="status-item">
+      <div class="s-label">IFM Cumulative Counters</div>
+      <div class="s-val info">Internal cross-check :  100% agreement</div>
+    </div>
+    <div class="status-item">
+      <div class="s-label">IFM flow_lph / fuel_temp_delta_c</div>
+      <div class="s-val warn">Do not use :  SkyView conversion pending</div>
+    </div>
+    <div class="status-item">
+      <div class="s-label">Fuel / Carbon Saved</div>
+      <div class="s-val warn">Not applicable :  pre-install baseline</div>
+    </div>
+    <div class="status-item">
+      <div class="s-label">Oil Quality (OQSx-G2)</div>
+      <div class="s-val warn">Not installed</div>
+    </div>
+    <div class="status-item">
+      <div class="s-label">Asset State</div>
+      <div class="s-val good">Operational :  baseline collection</div>
     </div>
   </div>
 </div>
@@ -218,23 +236,23 @@
 <div class="kpi-grid">
   <div class="kpi-card fuel">
     <div class="kpi-label">Fuel Consumed</div>
-    <div class="kpi-value">16.9<span class="kpi-unit">gal</span></div>
-    <div class="kpi-sub">64.0 L · engine CAN bus metered</div>
+    <div class="kpi-value">16.8<span class="kpi-unit">gal</span></div>
+    <div class="kpi-sub">63.5 L · engine CAN bus metered</div>
   </div>
   <div class="kpi-card dist">
     <div class="kpi-label">Distance</div>
-    <div class="kpi-value">104<span class="kpi-unit">mi</span></div>
-    <div class="kpi-sub">168 km · 65 mph max speed</div>
+    <div class="kpi-value">58<span class="kpi-unit">mi</span></div>
+    <div class="kpi-sub">94 km · 70 mph max speed</div>
   </div>
   <div class="kpi-card time">
     <div class="kpi-label">Engine Runtime</div>
-    <div class="kpi-value">5.5<span class="kpi-unit">hrs</span></div>
-    <div class="kpi-sub">329 min · avg moving 29.4 mph</div>
+    <div class="kpi-value">4.0<span class="kpi-unit">hrs</span></div>
+    <div class="kpi-sub">240 min · avg moving 25 mph</div>
   </div>
   <div class="kpi-card eff">
     <div class="kpi-label">Fuel Efficiency</div>
-    <div class="kpi-value">6.2<span class="kpi-unit">mpg</span></div>
-    <div class="kpi-sub">38.1 L/100km · odometer-based</div>
+    <div class="kpi-value">5.6<span class="kpi-unit">mpg</span></div>
+    <div class="kpi-sub">42.2 L/100km · trip-meter based</div>
   </div>
 </div>
 
@@ -245,14 +263,14 @@
     <h2>Duty Cycle</h2>
   </div>
   <div class="duty-bar">
-    <div class="duty-seg duty-driving" style="width:64%">64% Driving</div>
-    <div class="duty-seg duty-idle" style="width:10%"></div>
-    <div class="duty-seg duty-pto" style="width:26%">26% PTO</div>
+    <div class="duty-seg duty-driving" style="width:28%">28% Drive</div>
+    <div class="duty-seg duty-idle" style="width:43%">43% Idle</div>
+    <div class="duty-seg duty-pto" style="width:29%">29% PTO</div>
   </div>
   <div class="duty-legend">
-    <span><span class="legend-dot" style="background:var(--accent)"></span> Driving: 3.5 hrs</span>
-    <span><span class="legend-dot" style="background:var(--amber)"></span> Idle: 0.5 hrs (10%)</span>
-    <span><span class="legend-dot" style="background:var(--purple)"></span> PTO: 1.4 hrs (26%)</span>
+    <span><span class="legend-dot" style="background:var(--accent)"></span> Driving: 1.1 hrs</span>
+    <span><span class="legend-dot" style="background:var(--amber)"></span> Idle: 1.7 hrs (43%)</span>
+    <span><span class="legend-dot" style="background:var(--purple)"></span> PTO: 1.2 hrs (29%)</span>
   </div>
 </div>
 
@@ -265,76 +283,108 @@
   <div class="metric-row">
     <div class="metric-item">
       <label>Max Speed</label>
-      <div class="val">65 mph</div>
-      <div class="sub">105 km/h · pre-derate</div>
+      <div class="val">70 mph</div>
+      <div class="sub">112 km/h · highway capable</div>
     </div>
     <div class="metric-item">
       <label>Avg Moving Speed</label>
-      <div class="val">29.4 mph</div>
-      <div class="sub">47.3 km/h</div>
+      <div class="val">25 mph</div>
+      <div class="sub">41 km/h · mixed duty</div>
     </div>
     <div class="metric-item">
       <label>Engine RPM</label>
-      <div class="val">1,052 avg</div>
-      <div class="sub">Max: 1,666 RPM</div>
+      <div class="val">1,002 avg</div>
+      <div class="sub">Max: 1,682 RPM</div>
     </div>
     <div class="metric-item">
       <label>Odometer</label>
-      <div class="val">35,423 mi</div>
-      <div class="sub">57,008 km lifetime</div>
+      <div class="val">35,490 mi</div>
+      <div class="sub">57,103 km lifetime</div>
     </div>
     <div class="metric-item">
       <label>Engine Lifetime</label>
-      <div class="val">3,809 hrs</div>
+      <div class="val">1,580 hrs</div>
       <div class="sub">Total operating hours</div>
     </div>
     <div class="metric-item">
       <label>Connectivity</label>
-      <div class="val">98.8% cell</div>
-      <div class="sub">Strong telemetry signal</div>
+      <div class="val">100% cell</div>
+      <div class="sub">Continuous telemetry</div>
     </div>
     <div class="metric-item">
-      <label>Derate Readings</label>
-      <div class="val" style="color:var(--red)">17%</div>
-      <div class="sub">70 of 421 moving readings</div>
+      <label>PTO Activity</label>
+      <div class="val" style="color:var(--purple)">Active</div>
+      <div class="sub">143 of 449 engine-running</div>
     </div>
     <div class="metric-item">
-      <label>Today Status</label>
-      <div class="val" style="color:var(--red)">🔴 DOWN</div>
-      <div class="sub">171 IG-ON, 0 movement</div>
+      <label>Derate Status</label>
+      <div class="val" style="color:var(--green)">RESOLVED</div>
+      <div class="sub">Highway speeds observed</div>
     </div>
   </div>
 </div>
 
-<!-- Data Quality -->
+<!-- IFM Sensor Detail -->
 <div class="section">
   <div class="section-header">
     <div class="dot amber"></div>
-    <h2>Sensor Health</h2>
+    <h2>IFM Sensor Status · June 26 Audit</h2>
   </div>
-  <div class="quality-grid">
-    <div class="quality-item">
-      <div class="q-label">IFM Flow Sensors (SU6030)</div>
-      <div class="q-val bad">NON-FUNCTIONAL</div>
-    </div>
-    <div class="quality-item">
-      <div class="q-label">Oil Quality (OQSx-G2)</div>
-      <div class="q-val bad">NOT INSTALLED</div>
-    </div>
-    <div class="quality-item">
-      <div class="q-label">Engine CAN Bus (ST910x)</div>
-      <div class="q-val" style="color:var(--green)">OK — PRIMARY</div>
-    </div>
-  </div>
-  <div style="margin-top:12px;font-size:12px;color:var(--text-muted)">
-    ⚠️ Fuel metrics based on engine CAN bus data (ST910x). IFM flow sensors are non-functional and excluded.
-  </div>
+  <table class="ifm-table">
+    <thead>
+      <tr><th>Data Source</th><th>Status</th><th>Detail</th><th width="120">Disposition</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CAN bus fuel rate</td>
+        <td class="ok">VALIDATED</td>
+        <td>9.74 L/hr avg. 63.5 L consumed over 4.0 hrs running.</td>
+        <td class="ok">Primary source</td>
+      </tr>
+      <tr>
+        <td>IFM supply_total_l / return_total_l</td>
+        <td class="ok">VALIDATED</td>
+        <td>125.6 L supply, 62.1 L return, net 63.5 L. 100% agreement with CAN bus.</td>
+        <td class="ok">Internal cross-check</td>
+      </tr>
+      <tr>
+        <td>IFM supply_temp_c / return_temp_c</td>
+        <td class="ok">VALIDATED</td>
+        <td>Supply 35.3°C, return 44.9°C. Return warmer on 95.8% of readings. Physically correct.</td>
+        <td class="ok">Usable for analysis</td>
+      </tr>
+      <tr>
+        <td>supply_flow_lph / return_flow_lph</td>
+        <td class="no">DO NOT USE</td>
+        <td>Avg 0.53 L/hr vs 31.3 L/hr cumulative-implied. ~59x scaling error in SkyView conversion.</td>
+        <td class="no">Awaiting SkyView fix</td>
+      </tr>
+      <tr>
+        <td>fuel_temp_delta_c</td>
+        <td class="no">DO NOT USE</td>
+        <td>Computes supply - return (-9.6°C). Should be return - supply (+9.6°C). Formula reversed.</td>
+        <td class="no">Awaiting SkyView fix</td>
+      </tr>
+      <tr>
+        <td>supply_status / return_status</td>
+        <td class="warn">PENDING</td>
+        <td>Both report '0' on all rows. NAMUR NE 107 meaning unconfirmed.</td>
+        <td class="warn">Awaiting Stevens</td>
+      </tr>
+      <tr>
+        <td>fuel_saved / carbon_saved</td>
+        <td class="warn">N/A</td>
+        <td>decarbX Fuel Optimizer not yet installed. Savings unavailable until post-install baseline comparison.</td>
+        <td class="warn">Pre-install baseline</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- Footer -->
 <div class="footer">
-  <div>Generated by decarbX GHGsolve AI · 2026-06-25 16:21 UTC</div>
-  <div>Station 1983 (HRC REV POC1) · Engine CAN bus data via ST910x</div>
+  <div>Prepared by decarbX GHGsolve AI Command Center · 2026-06-26 20:04 UTC</div>
+  <div>Station 1983 (HRC REV POC1) · CAN bus primary · IFM cumulative cross-check</div>
 </div>
 
 </div>

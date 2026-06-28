@@ -209,6 +209,10 @@
       <div class="s-val good" id="engineVersion">GHGsolve Intelligence Engine</div>
     </div>
     <div class="status-item">
+      <div class="s-label">Road Transport KPI</div>
+      <div class="s-val warn">Excluded — seasonal confound (Mar vs Jun)</div>
+    </div>
+    <div class="status-item">
       <div class="s-label">Baseline Period</div>
       <div class="s-val info" id="baselinePeriod">—</div>
     </div>
@@ -252,13 +256,6 @@
     <div class="kpi-label">Stationary Operation Fuel</div>
     <div class="kpi-value green" id="kpi-stationary">—</div>
     <div class="kpi-sub" id="kpi-stationary-sub">—</div>
-  </div>
-  <!-- Road Transport -->
-  <div class="kpi-card caution">
-    <span class="kpi-badge neutral">Road Transport</span>
-    <div class="kpi-label">Road Transport-Only</div>
-    <div class="kpi-value amber" id="kpi-road">—</div>
-    <div class="kpi-sub" id="kpi-road-sub">—</div>
   </div>
   <!-- Methodology -->
   <div class="kpi-card neutral">
@@ -324,18 +321,6 @@ function renderKPIs(data) {
   const s = kpis.stationary_operation_fuel_improvement;
   document.getElementById('kpi-stationary').textContent = s.value_percent.toFixed(2) + '% lower';
   document.getElementById('kpi-stationary-sub').textContent = `${s.matched_strata} matched stationary strata · ${s.baseline_rows_used.toLocaleString()} / ${s.optimized_rows_used.toLocaleString()} rows`;
-  
-  // Road
-  const r = kpis.road_transport_only;
-  const roadVal = r.value_percent;
-  if (roadVal <= 0) {
-    document.getElementById('kpi-road').textContent = 'No POC1 savings finding';
-    document.getElementById('kpi-road').className = 'kpi-value amber';
-    document.getElementById('kpi-road-sub').textContent = r.dashboard_note || '';
-  } else {
-    document.getElementById('kpi-road').textContent = roadVal.toFixed(2) + '% lower';
-    document.getElementById('kpi-road-sub').textContent = '';
-  }
   
   // Strata
   document.getElementById('kpi-strata').textContent = o.matched_strata + ' matched';

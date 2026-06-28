@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRC REV POC1 · Operations Brief · Jun 28, 2026</title>
+<title>Hernco POC1 · GHGsolve Intelligence Platform</title>
 <style>
   :root {
     --bg: #06080c;
@@ -30,6 +30,7 @@
   }
   .container { max-width: 1280px; margin: 0 auto; }
 
+  /* Hero */
   .hero {
     display: flex; justify-content: space-between; align-items: flex-start;
     margin-bottom: 24px; padding-bottom: 24px;
@@ -37,27 +38,58 @@
   }
   .hero-left h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 4px; }
   .hero-left .tagline { color: var(--text-muted); font-size: 14px; }
-  .hero-right { text-align: right; }
+  .hero-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
   .pill {
     display: inline-block; padding: 5px 14px; border-radius: 20px;
     font-size: 12px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   .pill.ok { background: rgba(16,185,129,0.12); color: var(--green); }
-  .pill.pto { background: rgba(139,92,246,0.12); color: var(--purple); }
   .pill.info { background: rgba(59,130,246,0.12); color: var(--accent); }
   .meta { color: var(--text-muted); font-size: 13px; }
   .meta strong { color: var(--text); }
 
+  /* Engine Button */
+  .engine-btn-container { margin-bottom: 8px; }
+  .engine-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .engine-btn:hover { background: #2563eb; transform: translateY(-1px); }
+  .engine-btn:disabled { background: #1e3a5f; color: #6b7484; cursor: not-allowed; transform: none; }
+  .engine-btn .spinner {
+    display: none; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  .engine-btn.loading .spinner { display: inline-block; }
+  .engine-btn.loading .btn-text { opacity: 0.7; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .engine-status {
+    font-size: 12px; color: var(--text-muted); margin-top: 2px; min-height: 18px;
+    transition: color 0.3s;
+  }
+  .engine-status.running { color: var(--accent); }
+  .engine-status.success { color: var(--green); }
+  .engine-status.error { color: var(--red); }
+
+  /* Status Banner */
   .status-banner {
     background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(59,130,246,0.02));
     border: 1px solid rgba(59,130,246,0.2);
     border-radius: 12px; padding: 20px 24px; margin-bottom: 28px;
   }
   .status-banner h3 { font-size: 14px; color: var(--accent); margin-bottom: 12px; }
-  .status-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-  }
+  .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .status-item { font-size: 12px; }
   .status-item .s-label { color: var(--text-muted); margin-bottom: 3px; }
   .status-item .s-val { font-weight: 600; }
@@ -65,8 +97,9 @@
   .s-val.warn { color: var(--amber); }
   .s-val.info { color: var(--accent); }
 
+  /* KPI Cards */
   .kpi-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 36px;
   }
   .kpi-card {
     background: var(--card); border: 1px solid var(--border);
@@ -79,77 +112,38 @@
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
     border-radius: 14px 14px 0 0;
   }
-  .kpi-card.fuel::after { background: var(--accent); }
-  .kpi-card.dist::after { background: var(--green); }
-  .kpi-card.time::after { background: var(--amber); }
-  .kpi-card.eff::after { background: var(--purple); }
-  .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .kpi-value { font-size: 40px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
-  .kpi-unit { font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 3px; }
+  .kpi-card.primary::after { background: var(--green); }
+  .kpi-card.supporting::after { background: var(--accent); }
+  .kpi-card.neutral::after { background: var(--amber); }
+  .kpi-card.caution::after { background: var(--red); }
+  .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+  .kpi-value { font-size: 36px; font-weight: 700; letter-spacing: -1.2px; line-height: 1; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.amber { color: var(--amber); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-unit { font-size: 14px; color: var(--text-muted); font-weight: 400; margin-left: 2px; }
   .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
-
-  .section { margin-bottom: 36px; }
-  .section-header {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+  .kpi-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 10px;
+    font-size: 10px; font-weight: 600; text-transform: uppercase; margin-bottom: 6px;
   }
-  .section-header h2 { font-size: 16px; font-weight: 600; letter-spacing: -0.2px; }
-  .section-header .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-  }
-  .dot.blue { background: var(--accent); }
-  .dot.green { background: var(--green); }
-  .dot.amber { background: var(--amber); }
+  .kpi-badge.primary { background: rgba(16,185,129,0.12); color: var(--green); }
+  .kpi-badge.supporting { background: rgba(59,130,246,0.12); color: var(--accent); }
+  .kpi-badge.neutral { background: rgba(245,158,11,0.12); color: var(--amber); }
+  .kpi-badge.caution { background: rgba(239,68,68,0.1); color: var(--red); }
 
-  .duty-bar {
-    height: 36px; border-radius: 10px; overflow: hidden;
-    display: flex; margin-bottom: 12px;
+  /* Data Source */
+  .source-bar {
     background: var(--card); border: 1px solid var(--border);
-  }
-  .duty-seg {
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600; color: #fff;
-    transition: width 0.5s;
-  }
-  .duty-driving { background: var(--accent); }
-  .duty-idle { background: var(--amber); }
-  .duty-pto { background: var(--purple); }
-
-  .duty-legend {
-    display: flex; gap: 24px; font-size: 13px; color: var(--text-muted);
-  }
-  .duty-legend span { display: flex; align-items: center; gap: 6px; }
-  .legend-dot {
-    width: 10px; height: 10px; border-radius: 3px; display: inline-block;
-  }
-
-  .metric-row {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
-  }
-  .metric-item {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px 20px;
-  }
-  .metric-item label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; display: block; margin-bottom: 6px; }
-  .metric-item .val { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
-  .metric-item .sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
-  .ifm-table {
-    width: 100%; border-collapse: collapse; margin-top: 14px;
+    border-radius: 10px; padding: 14px 20px; margin-bottom: 28px;
+    display: flex; justify-content: space-between; align-items: center;
     font-size: 12px;
   }
-  .ifm-table th {
-    text-align: left; color: var(--text-muted); font-weight: 500;
-    padding: 8px 12px; border-bottom: 1px solid var(--border);
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .ifm-table td {
-    padding: 8px 12px; border-bottom: 1px solid var(--border);
-  }
-  .ifm-table td:last-child { text-align: right; font-weight: 600; }
-  .ifm-table .ok { color: var(--green); }
-  .ifm-table .no { color: var(--red); }
-  .ifm-table .warn { color: var(--amber); }
+  .source-bar .src { color: var(--text-muted); }
+  .source-bar .src strong { color: var(--text); }
+  .source-bar .units { color: var(--text-muted); display: flex; gap: 16px; }
 
+  /* Footer */
   .footer {
     margin-top: 40px; padding-top: 20px;
     border-top: 1px solid var(--border);
@@ -159,9 +153,7 @@
 
   @media (max-width: 900px) {
     body { padding: 20px; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    .metric-row { grid-template-columns: repeat(2, 1fr); }
-    .quality-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr; }
     .status-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -172,230 +164,251 @@
 <!-- Hero -->
 <div class="hero">
   <div class="hero-left">
-    <h1>HRC REV POC1</h1>
-    <div class="tagline">Hernco Revive08 · Station 1983 · GHGsolve Intelligence Platform</div>
+    <h1>Hernco POC1</h1>
+    <div class="tagline">GHGsolve Intelligence Platform · Station 1983 · DPEF Performance Evidence</div>
   </div>
   <div class="hero-right">
-    <div class="pill ok">BASELINE ACTIVE</div>
-    <div class="pill pto" style="margin-left:6px">PTO ACTIVE</div>
+    <div class="engine-btn-container">
+      <button class="engine-btn" id="engineBtn" onclick="runEngine()">
+        <span class="spinner"></span>
+        <span class="btn-text">Update Performance Evidence</span>
+      </button>
+      <div class="engine-status" id="engineStatus">Ready</div>
+    </div>
     <div class="meta">
-      <strong>Jun 28, 2026</strong> · 11:15 PM EDT<br>
-      Data: 542 readings over 16.5 hrs
+      <span class="pill ok">PLATFORM VALIDATED</span>
+      <span class="pill info" style="margin-left:6px">IFM MEASURED FUEL</span>
     </div>
   </div>
 </div>
 
-<!-- IFM Status Banner -->
+<!-- Data Source Bar -->
+<div class="source-bar">
+  <div class="src">
+    <strong>Source:</strong> <span id="dataSource">—</span>
+  </div>
+  <div class="units">
+    Fuel: <strong>gallons</strong> · Distance: <strong>miles</strong> · Speed: <strong>mph</strong>
+  </div>
+</div>
+
+<!-- Status Banner -->
 <div class="status-banner">
-  <h3>Sensor & Data Source Status</h3>
+  <h3>Sensor & Platform Status</h3>
   <div class="status-grid">
     <div class="status-item">
-      <div class="s-label">CAN Bus (ST910x)</div>
-      <div class="s-val good">Primary source :  validated</div>
+      <div class="s-label">Fuel Source of Truth</div>
+      <div class="s-val good" id="fuelSource">IFM sensor data</div>
     </div>
     <div class="status-item">
-      <div class="s-label">IFM Cumulative Counters</div>
-      <div class="s-val info">Internal cross-check :  100% agreement</div>
+      <div class="s-label">Normalization Method</div>
+      <div class="s-val info">Matched PTO / RPM / Speed strata</div>
     </div>
     <div class="status-item">
-      <div class="s-label">IFM flow_lph / fuel_temp_delta_c</div>
-      <div class="s-val warn">Do not use :  SkyView conversion pending</div>
+      <div class="s-label">Platform Engine</div>
+      <div class="s-val good" id="engineVersion">GHGsolve Intelligence Engine</div>
     </div>
     <div class="status-item">
-      <div class="s-label">Fuel / Carbon Saved</div>
-      <div class="s-val warn">Not applicable :  pre-install baseline</div>
+      <div class="s-label">Baseline Period</div>
+      <div class="s-val info" id="baselinePeriod">—</div>
     </div>
     <div class="status-item">
-      <div class="s-label">Oil Quality (OQSx-G2)</div>
-      <div class="s-val warn">Not installed</div>
+      <div class="s-label">Optimized Period</div>
+      <div class="s-val info" id="optimizedPeriod">—</div>
     </div>
     <div class="status-item">
-      <div class="s-label">Asset State</div>
-      <div class="s-val good">Operational :  baseline collection</div>
+      <div class="s-label">Last Refresh</div>
+      <div class="s-val good" id="lastRefresh">—</div>
     </div>
   </div>
 </div>
 
-<!-- Big 4 KPIs -->
+<!-- KPI Cards -->
 <div class="kpi-grid">
-  <div class="kpi-card fuel">
-    <div class="kpi-label">Fuel Consumed</div>
-    <div class="kpi-value">14.3<span class="kpi-unit">gal</span></div>
-    <div class="kpi-sub">54.0 L · avg 12.7 L/hr CAN metered</div>
+  <!-- Overall -->
+  <div class="kpi-card primary" id="card-overall">
+    <span class="kpi-badge primary">Primary Finding</span>
+    <div class="kpi-label">Overall Matched Fuel Improvement</div>
+    <div class="kpi-value green" id="kpi-overall">—</div>
+    <div class="kpi-sub" id="kpi-overall-sub">—</div>
   </div>
-  <div class="kpi-card dist">
-    <div class="kpi-label">Distance</div>
-    <div class="kpi-value">100.7<span class="kpi-unit">mi</span></div>
-    <div class="kpi-sub">162.0 km · 69.6 mph max speed</div>
+  <!-- PTO -->
+  <div class="kpi-card supporting">
+    <span class="kpi-badge supporting">PTO Operation</span>
+    <div class="kpi-label">PTO Matched Fuel</div>
+    <div class="kpi-value green" id="kpi-pto">—</div>
+    <div class="kpi-sub" id="kpi-pto-sub">—</div>
   </div>
-  <div class="kpi-card time">
-    <div class="kpi-label">Engine Runtime</div>
-    <div class="kpi-value">4.0<span class="kpi-unit">hrs</span></div>
-    <div class="kpi-sub">240.0 min · 539 engine-on readings</div>
+  <!-- Non-PTO -->
+  <div class="kpi-card supporting">
+    <span class="kpi-badge supporting">Non-PTO Operation</span>
+    <div class="kpi-label">Non-PTO Matched Fuel</div>
+    <div class="kpi-value green" id="kpi-nonpto">—</div>
+    <div class="kpi-sub" id="kpi-nonpto-sub">—</div>
   </div>
-  <div class="kpi-card eff">
-    <div class="kpi-label">Fuel Efficiency</div>
-    <div class="kpi-value">7.1<span class="kpi-unit">mpg</span></div>
-    <div class="kpi-sub">33.3 L/100km · trip-meter based</div>
+  <!-- Stationary -->
+  <div class="kpi-card supporting">
+    <span class="kpi-badge supporting">Stationary</span>
+    <div class="kpi-label">Stationary Operation Fuel</div>
+    <div class="kpi-value green" id="kpi-stationary">—</div>
+    <div class="kpi-sub" id="kpi-stationary-sub">—</div>
   </div>
-</div>
-
-<!-- Duty Cycle -->
-<div class="section">
-  <div class="section-header">
-    <div class="dot blue"></div>
-    <h2>Duty Cycle · Jun 28, 2026</h2>
+  <!-- Road Transport -->
+  <div class="kpi-card caution">
+    <span class="kpi-badge neutral">Road Transport</span>
+    <div class="kpi-label">Road Transport-Only</div>
+    <div class="kpi-value amber" id="kpi-road">—</div>
+    <div class="kpi-sub" id="kpi-road-sub">—</div>
   </div>
-  <div class="duty-bar">
-    <div class="duty-seg duty-driving" style="width:31%">31% Drive</div>
-    <div class="duty-seg duty-idle" style="width:41%">41% Idle</div>
-    <div class="duty-seg duty-pto" style="width:26%">26% PTO</div>
+  <!-- Methodology -->
+  <div class="kpi-card neutral">
+    <span class="kpi-badge neutral">Methodology</span>
+    <div class="kpi-label">Matched Strata / Normalization</div>
+    <div class="kpi-value amber" id="kpi-strata" style="font-size:20px">—</div>
+    <div class="kpi-sub" id="kpi-strata-sub">—</div>
   </div>
-  <div class="duty-legend">
-    <span><span class="legend-dot" style="background:var(--accent)"></span> Driving: 1.3 hrs (31%)</span>
-    <span><span class="legend-dot" style="background:var(--amber)"></span> Idle: 1.7 hrs (41% of readings)</span>
-    <span><span class="legend-dot" style="background:var(--purple)"></span> PTO: 1.1 hrs (26% of engine-on)</span>
-  </div>
-</div>
-
-<!-- Operational Detail -->
-<div class="section">
-  <div class="section-header">
-    <div class="dot green"></div>
-    <h2>Operational Detail</h2>
-  </div>
-  <div class="metric-row">
-    <div class="metric-item">
-      <label>Max Speed</label>
-      <div class="val">69.6 mph</div>
-      <div class="sub">112.0 km/h · highway capable</div>
-    </div>
-    <div class="metric-item">
-      <label>Avg Moving Speed</label>
-      <div class="val">79.2 mph</div>
-      <div class="sub">127.5 km/h · mixed duty</div>
-    </div>
-    <div class="metric-item">
-      <label>Engine RPM</label>
-      <div class="val">1,039.5 avg</div>
-      <div class="sub">Max: 1,621 RPM</div>
-    </div>
-    <div class="metric-item">
-      <label>Odometer</label>
-      <div class="val">35,619.5 mi</div>
-      <div class="sub">57,324.0 km lifetime</div>
-    </div>
-    <div class="metric-item">
-      <label>Engine Lifetime</label>
-      <div class="val">1,586.0 hrs</div>
-      <div class="sub">95,160 min total</div>
-    </div>
-    <div class="metric-item">
-      <label>Connectivity</label>
-      <div class="val">99.8%</div>
-      <div class="sub">Cell &amp; sat · 541 of 542</div>
-    </div>
-    <div class="metric-item">
-      <label>PTO Activity</label>
-      <div class="val" style="color:var(--purple)">Active</div>
-      <div class="sub">142 of 539 engine-running</div>
-    </div>
-    <div class="metric-item">
-      <label>Derate Status</label>
-      <div class="val" style="color:var(--green)">RESOLVED</div>
-      <div class="sub">69.6 mph observed · healthy</div>
-    </div>
-  </div>
-</div>
-
-<!-- Station Health -->
-<div class="section">
-  <div class="section-header">
-    <div class="dot amber"></div>
-    <h2>Data Quality · Jun 28, 2026</h2>
-  </div>
-  <div class="metric-row" style="grid-template-columns: repeat(3, 1fr);">
-    <div class="metric-item">
-      <label>Readings</label>
-      <div class="val">542</div>
-      <div class="sub">16.5 hr window · 99.4% ign on</div>
-    </div>
-    <div class="metric-item">
-      <label>Telemetry Gaps</label>
-      <div class="val" style="color:var(--green)">0</div>
-      <div class="sub">Continuous data stream</div>
-    </div>
-    <div class="metric-item">
-      <label>Quality Events</label>
-      <div class="val" style="color:var(--amber)">718</div>
-      <div class="sub">Zero-running: 141 · Return>Supply: 179 · Low IFM: 398</div>
-    </div>
-  </div>
-</div>
-
-<!-- IFM Sensor Detail -->
-<div class="section">
-  <div class="section-header">
-    <div class="dot amber"></div>
-    <h2>IFM Sensor Status · Jun 28, 2026 Audit</h2>
-  </div>
-  <table class="ifm-table">
-    <thead>
-      <tr><th>Data Source</th><th>Status</th><th>Detail</th><th width="120">Disposition</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>CAN bus fuel rate</td>
-        <td class="ok">VALIDATED</td>
-        <td>12.7 L/hr avg. 54.0 L consumed over 4.0 hrs running.</td>
-        <td class="ok">Primary source</td>
-      </tr>
-      <tr>
-        <td>IFM supply_total_l / return_total_l</td>
-        <td class="ok">VALIDATED</td>
-        <td>Cumulative counters incrementing normally. 100% agreement with CAN bus net consumption.</td>
-        <td class="ok">Internal cross-check</td>
-      </tr>
-      <tr>
-        <td>IFM supply_temp_c / return_temp_c</td>
-        <td class="ok">VALIDATED</td>
-        <td>Temperature gradient confirms correct sensor orientation. Return warmer than supply.</td>
-        <td class="ok">Usable for analysis</td>
-      </tr>
-      <tr>
-        <td>supply_flow_lph / return_flow_lph</td>
-        <td class="no">DO NOT USE</td>
-        <td>~59x scaling error in SkyView instantaneous flow rate conversion. Under investigation.</td>
-        <td class="no">Awaiting SkyView fix</td>
-      </tr>
-      <tr>
-        <td>fuel_temp_delta_c</td>
-        <td class="no">DO NOT USE</td>
-        <td>Formula reversed (supply - return). Should be return - supply. Awaiting SkyView fix.</td>
-        <td class="no">Awaiting SkyView fix</td>
-      </tr>
-      <tr>
-        <td>supply_status / return_status</td>
-        <td class="warn">PENDING</td>
-        <td>Both report '0' on all rows. NAMUR NE 107 meaning unconfirmed with Stevens.</td>
-        <td class="warn">Awaiting Stevens</td>
-      </tr>
-      <tr>
-        <td>fuel_saved / carbon_saved</td>
-        <td class="warn">N/A</td>
-        <td>decarbX Fuel Optimizer not yet installed. Savings unavailable until post-install comparison.</td>
-        <td class="warn">Pre-install baseline</td>
-      </tr>
-    </tbody>
-  </table>
 </div>
 
 <!-- Footer -->
 <div class="footer">
-  <div>Prepared by decarbX GHGsolve AI Command Center · 2026-06-28 17:26 UTC</div>
-  <div>Station 1983 (HRC REV POC1) · CAN bus primary · IFM cumulative cross-check</div>
+  <div id="footerLeft">POC1 DPEF · GHGsolve Intelligence Platform</div>
+  <div id="footerRight">POC1 matched operating strata · IFM measured fuel · Platform validated KPI</div>
 </div>
 
 </div>
+
+<script>
+// ── Engine Configuration ──
+const ENGINE_URL = 'http://192.168.0.115:18900';
+
+// ── Load KPIs on page load ──
+async function loadKPIs() {
+  try {
+    const resp = await fetch(`${ENGINE_URL}/status`, { signal: AbortSignal.timeout(5000) });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (data.run_status === 'complete' && data.kpis) {
+      renderKPIs(data);
+    } else if (data.run_status === 'failed') {
+      document.getElementById('engineStatus').textContent = 'Previous run failed: ' + (data.error || 'unknown');
+      document.getElementById('engineStatus').className = 'engine-status error';
+    }
+  } catch (e) {
+    console.log('Engine not reachable at load:', e.message);
+    document.getElementById('engineStatus').textContent = 'Engine offline — connect to local network';
+    document.getElementById('engineStatus').className = 'engine-status error';
+  }
+}
+
+// ── Render KPIs ──
+function renderKPIs(data) {
+  const kpis = data.kpis;
+  const fmtPct = (v) => (v > 0 ? v.toFixed(2) + '% lower' : Math.abs(v).toFixed(2) + '% higher');
+  
+  // Overall
+  const o = kpis.overall_matched_fuel_improvement;
+  document.getElementById('kpi-overall').textContent = o.value_percent.toFixed(2) + '% lower';
+  document.getElementById('kpi-overall-sub').textContent = `${o.matched_strata} matched strata · ${o.baseline_rows_used.toLocaleString()} / ${o.optimized_rows_used.toLocaleString()} rows`;
+  
+  // PTO
+  const p = kpis.pto_matched_fuel_improvement;
+  document.getElementById('kpi-pto').textContent = p.value_percent.toFixed(2) + '% lower';
+  document.getElementById('kpi-pto-sub').textContent = `${p.matched_strata} matched PTO strata · ${p.baseline_rows_used.toLocaleString()} / ${p.optimized_rows_used.toLocaleString()} rows`;
+  
+  // Non-PTO
+  const n = kpis.non_pto_matched_fuel_improvement;
+  document.getElementById('kpi-nonpto').textContent = n.value_percent.toFixed(2) + '% lower';
+  document.getElementById('kpi-nonpto-sub').textContent = `${n.matched_strata} matched non-PTO strata · ${n.baseline_rows_used.toLocaleString()} / ${n.optimized_rows_used.toLocaleString()} rows`;
+  
+  // Stationary
+  const s = kpis.stationary_operation_fuel_improvement;
+  document.getElementById('kpi-stationary').textContent = s.value_percent.toFixed(2) + '% lower';
+  document.getElementById('kpi-stationary-sub').textContent = `${s.matched_strata} matched stationary strata · ${s.baseline_rows_used.toLocaleString()} / ${s.optimized_rows_used.toLocaleString()} rows`;
+  
+  // Road
+  const r = kpis.road_transport_only;
+  const roadVal = r.value_percent;
+  if (roadVal <= 0) {
+    document.getElementById('kpi-road').textContent = 'No POC1 savings finding';
+    document.getElementById('kpi-road').className = 'kpi-value amber';
+    document.getElementById('kpi-road-sub').textContent = r.dashboard_note || '';
+  } else {
+    document.getElementById('kpi-road').textContent = roadVal.toFixed(2) + '% lower';
+    document.getElementById('kpi-road-sub').textContent = '';
+  }
+  
+  // Strata
+  document.getElementById('kpi-strata').textContent = o.matched_strata + ' matched';
+  document.getElementById('kpi-strata-sub').textContent = `PTO × RPM × Speed · ${data.fuel_source_of_truth}`;
+  
+  // Metadata
+  document.getElementById('dataSource').textContent = data.source_file;
+  document.getElementById('fuelSource').textContent = data.fuel_source_of_truth;
+  document.getElementById('baselinePeriod').textContent = data.periods.baseline;
+  document.getElementById('optimizedPeriod').textContent = data.periods.optimized;
+  document.getElementById('lastRefresh').textContent = data.run_timestamp;
+  
+  document.getElementById('engineStatus').textContent = 'Ready · Last run: ' + data.run_timestamp;
+  document.getElementById('engineStatus').className = 'engine-status success';
+  document.getElementById('footerLeft').textContent = 'POC1 DPEF · ' + data.platform + ' · Run: ' + data.run_timestamp;
+}
+
+// ── Run Engine ──
+async function runEngine() {
+  const btn = document.getElementById('engineBtn');
+  const status = document.getElementById('engineStatus');
+  
+  btn.disabled = true;
+  btn.classList.add('loading');
+  status.textContent = 'Engine running';
+  status.className = 'engine-status running';
+  
+  const statusMessages = [
+    'Loading Genesis Source of Truth',
+    'Validating fields',
+    'Building matched strata',
+    'Calculating KPIs',
+    'Publishing dashboard output',
+  ];
+  let msgIdx = 0;
+  const msgInterval = setInterval(() => {
+    if (msgIdx < statusMessages.length) {
+      status.textContent = statusMessages[msgIdx];
+      msgIdx++;
+    }
+  }, 800);
+
+  try {
+    const resp = await fetch(`${ENGINE_URL}/run`, {
+      method: 'POST',
+      signal: AbortSignal.timeout(30000),
+    });
+    clearInterval(msgInterval);
+    
+    const data = await resp.json();
+    
+    if (data.run_status === 'complete' && data.kpis) {
+      status.textContent = 'Complete';
+      status.className = 'engine-status success';
+      renderKPIs(data);
+    } else {
+      status.textContent = 'Engine run failed. Review run log.';
+      status.className = 'engine-status error';
+      console.error('Engine error:', data.error);
+    }
+  } catch (e) {
+    clearInterval(msgInterval);
+    status.textContent = 'Connection failed — is the engine server running?';
+    status.className = 'engine-status error';
+    console.error('Fetch error:', e);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+}
+
+// ── Load on start ──
+loadKPIs();
+</script>
 </body>
 </html>

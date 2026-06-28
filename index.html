@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hernco POC1 · GHGsolve Intelligence Platform</title>
+<title>HRC REV POC1 · GHGsolve Intelligence Platform</title>
 <style>
   :root {
     --bg: #06080c;
@@ -164,7 +164,7 @@
 <!-- Hero -->
 <div class="hero">
   <div class="hero-left">
-    <h1>Hernco POC1</h1>
+    <h1>HRC REV POC1</h1>
     <div class="tagline">GHGsolve Intelligence Platform · Station 1983 · DPEF Performance Evidence</div>
   </div>
   <div class="hero-right">
@@ -279,7 +279,7 @@
 const ENGINE_URL = 'http://192.168.0.115:18900';
 
 // ── Embedded fallback data (last engine run) ──
-const FALLBACK_DATA = {"project":"Hernco POC1","source_file":"Genesis_Source_of_Truth_POC1_FULL.csv","engine":"GHGsolve Intelligence Engine","platform":"GHGsolve Intelligence Platform","run_status":"complete","run_timestamp":"2026-06-28 18:01:23","fuel_source_of_truth":"IFM sensor data","reporting_units":{"fuel":"gallons","distance":"miles","speed":"mph","fuel_rate":"gallons per hour"},"periods":{"baseline":"2026-03-05 through 2026-04-12","optimized":"2026-04-21 through 2026-06-12","excluded_stabilization":"2026-04-13 through 2026-04-20","excluded_poc2_boundary":"2026-06-19 forward"},"kpis":{"overall_matched_fuel_improvement":{"value_percent":19.77,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, matched PTO/RPM/speed strata, normalized to baseline operating mix","baseline_rows_used":8111,"optimized_rows_used":12736,"matched_strata":24,"baseline_fuel_gal":267.66,"optimized_normalized_fuel_gal":214.73,"difference_gal":52.91,"display_status":"primary"},"pto_matched_fuel_improvement":{"value_percent":44.01,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, PTO matched strata, normalized to baseline PTO operating mix","baseline_rows_used":2474,"optimized_rows_used":3071,"matched_strata":6,"baseline_fuel_gal":57.37,"optimized_normalized_fuel_gal":32.12,"difference_gal":25.25,"display_status":"positive"},"non_pto_matched_fuel_improvement":{"value_percent":13.15,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, non-PTO matched strata, normalized to baseline non-PTO operating mix","baseline_rows_used":5637,"optimized_rows_used":9665,"matched_strata":18,"baseline_fuel_gal":210.29,"optimized_normalized_fuel_gal":182.61,"difference_gal":27.66,"display_status":"supporting"},"stationary_operation_fuel_improvement":{"value_percent":56.91,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, stationary matched strata, normalized to baseline stationary operating mix","baseline_rows_used":3686,"optimized_rows_used":3626,"matched_strata":8,"baseline_fuel_gal":111.58,"optimized_normalized_fuel_gal":48.08,"difference_gal":63.49,"display_status":"strongest_duty_cycle"}}};
+const FALLBACK_DATA = {"project":"HRC REV POC1","source_file":"Genesis_Source_of_Truth_POC1_FULL.csv","engine":"GHGsolve Intelligence Engine","platform":"GHGsolve Intelligence Platform","run_status":"complete","run_timestamp":"2026-06-28 18:01:23","fuel_source_of_truth":"IFM sensor data","reporting_units":{"fuel":"gallons","distance":"miles","speed":"mph","fuel_rate":"gallons per hour"},"periods":{"baseline":"2026-03-05 through 2026-04-12","optimized":"2026-04-21 through 2026-06-12","excluded_stabilization":"2026-04-13 through 2026-04-20","excluded_poc2_boundary":"2026-06-19 forward"},"kpis":{"overall_matched_fuel_improvement":{"value_percent":19.77,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, matched PTO/RPM/speed strata, normalized to baseline operating mix","baseline_rows_used":8111,"optimized_rows_used":12736,"matched_strata":24,"baseline_fuel_gal":267.66,"optimized_normalized_fuel_gal":214.73,"difference_gal":52.91,"display_status":"primary"},"pto_matched_fuel_improvement":{"value_percent":44.01,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, PTO matched strata, normalized to baseline PTO operating mix","baseline_rows_used":2474,"optimized_rows_used":3071,"matched_strata":6,"baseline_fuel_gal":57.37,"optimized_normalized_fuel_gal":32.12,"difference_gal":25.25,"display_status":"positive"},"non_pto_matched_fuel_improvement":{"value_percent":13.15,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, non-PTO matched strata, normalized to baseline non-PTO operating mix","baseline_rows_used":5637,"optimized_rows_used":9665,"matched_strata":18,"baseline_fuel_gal":210.29,"optimized_normalized_fuel_gal":182.61,"difference_gal":27.66,"display_status":"supporting"},"stationary_operation_fuel_improvement":{"value_percent":56.91,"interpretation":"lower fuel consumption","kpi_basis":"IFM measured fuel, stationary matched strata, normalized to baseline stationary operating mix","baseline_rows_used":3686,"optimized_rows_used":3626,"matched_strata":8,"baseline_fuel_gal":111.58,"optimized_normalized_fuel_gal":48.08,"difference_gal":63.49,"display_status":"strongest_duty_cycle"}}};
 
 // ── Load KPIs on page load ──
 async function loadKPIs() {

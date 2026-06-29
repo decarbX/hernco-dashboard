@@ -146,26 +146,53 @@
 
   /* Glossary */
   .glossary {
-    margin-top: 36px; padding: 24px 28px;
+    margin-top: 36px; padding: 20px 24px;
     background: var(--card); border: 1px solid var(--border);
     border-radius: 12px;
   }
   .glossary h3 {
-    font-size: 12px; color: var(--text-muted);
+    font-size: 11px; color: var(--text-muted);
     text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
-  .glossary-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  .glossary-buttons {
+    display: flex; gap: 8px; flex-wrap: wrap;
   }
-  .glossary-item dt {
+  .glossary-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .glossary-btn:hover {
+    border-color: #2a3a52;
+    color: var(--text);
+  }
+  .glossary-btn.active {
+    background: rgba(59,130,246,0.12);
+    border-color: rgba(59,130,246,0.35);
+    color: var(--accent);
+  }
+  .glossary-def {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-muted);
+    line-height: 1.55;
+    min-height: 20px;
+    transition: opacity 0.15s;
+  }
+  .glossary-def dt {
     font-size: 11px; font-weight: 600; color: var(--text);
     margin-bottom: 4px;
-    font-family: 'SF Mono', Monaco, monospace;
   }
-  .glossary-item dd {
-    font-size: 11px; color: var(--text-muted);
-    line-height: 1.55; margin: 0;
+  .glossary-def dd {
+    margin: 0; font-size: 11px;
   }
 
   /* Footer */
@@ -180,10 +207,6 @@
     body { padding: 20px; }
     .kpi-grid { grid-template-columns: 1fr; }
     .status-grid { grid-template-columns: 1fr; }
-    .glossary-grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 600px) {
-    .glossary-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -305,24 +328,13 @@
 <!-- Glossary -->
 <div class="glossary">
   <h3>Key Terms</h3>
-  <dl class="glossary-grid">
-    <div class="glossary-item">
-      <dt>Matched Strata</dt>
-      <dd>Operating states defined by PTO status, RPM band, and speed band. Groups telemetry into like-for-like conditions so baseline and optimized periods are compared within the same stratum.</dd>
-    </div>
-    <div class="glossary-item">
-      <dt>Normalization</dt>
-      <dd>Weighting the optimized period's fuel rate in each stratum by the baseline period's operating hours. Eliminates duty-cycle shift as a confounding factor. Answers: if the machine did the same work in both periods, how much fuel would it use?</dd>
-    </div>
-    <div class="glossary-item">
-      <dt>IFM Measured Fuel</dt>
-      <dd>Fuel volume measured directly by IFM SU6030 ultrasonic flow meters on the supply and return fuel circuits. Independent physical measurement, not derived from ECU estimates.</dd>
-    </div>
-    <div class="glossary-item">
-      <dt>t CO<sub>2</sub>e</dt>
-      <dd>Metric tonnes of carbon dioxide equivalent. 1 t CO<sub>2</sub>e = 1,000 kg. Calculated from measured diesel savings at 10.21 kg CO<sub>2</sub> per gallon (US EPA factor).</dd>
-    </div>
-  </dl>
+  <div class="glossary-buttons">
+    <button class="glossary-btn" data-term="strata">Matched Strata</button>
+    <button class="glossary-btn" data-term="norm">Normalization</button>
+    <button class="glossary-btn" data-term="ifm">IFM Measured Fuel</button>
+    <button class="glossary-btn" data-term="co2">t CO<sub>2</sub>e</button>
+  </div>
+  <div class="glossary-def" id="glossaryDef"></div>
 </div>
 
 <!-- Footer -->
@@ -463,6 +475,51 @@ async function runEngine() {
     btn.classList.remove('loading');
   }
 }
+
+// ── Glossary ──
+const GLOSSARY = {
+  strata: {
+    term: 'Matched Strata',
+    def: 'Operating states defined by PTO status, RPM band, and speed band. Groups telemetry into like-for-like conditions so baseline and optimized periods are compared within the same stratum.'
+  },
+  norm: {
+    term: 'Normalization',
+    def: 'Weighting the optimized period\'s fuel rate in each stratum by the baseline period\'s operating hours. Eliminates duty-cycle shift as a confounding factor. Answers: if the machine did the same work in both periods, how much fuel would it use?'
+  },
+  ifm: {
+    term: 'IFM Measured Fuel',
+    def: 'Fuel volume measured directly by IFM SU6030 ultrasonic flow meters on the supply and return fuel circuits. Independent physical measurement, not derived from ECU estimates.'
+  },
+  co2: {
+    term: 't CO<sub>2</sub>e',
+    def: 'Metric tonnes of carbon dioxide equivalent. 1 t CO<sub>2</sub>e = 1,000 kg. Calculated from measured diesel savings at 10.21 kg CO<sub>2</sub> per gallon (US EPA factor).'
+  }
+};
+
+let activeTerm = null;
+
+document.querySelectorAll('.glossary-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const term = btn.dataset.term;
+    const defDiv = document.getElementById('glossaryDef');
+
+    if (activeTerm === term) {
+      // Deselect
+      btn.classList.remove('active');
+      defDiv.innerHTML = '';
+      activeTerm = null;
+      return;
+    }
+
+    // Select new
+    document.querySelectorAll('.glossary-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeTerm = term;
+
+    const g = GLOSSARY[term];
+    defDiv.innerHTML = '<dt>' + g.term + '</dt><dd>' + g.def + '</dd>';
+  });
+});
 
 // ── Load on start ──
 loadKPIs();

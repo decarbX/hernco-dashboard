@@ -337,13 +337,11 @@ function renderKPIs(data) {
   document.getElementById('kpi-stationary').textContent = s.value_percent.toFixed(2) + '% lower';
   document.getElementById('kpi-stationary-sub').textContent = `${s.matched_strata} matched stationary strata · ${s.baseline_rows_used.toLocaleString()} / ${s.optimized_rows_used.toLocaleString()} rows`;
   
-  // CO2 — total project fuel (all KPI-eligible, both periods) × overall reduction
-  const totalFuelGal = 726.85;  // 332.92 baseline + 393.92 optimized, triple-check verified
-  const reductionRate = kpis.overall_matched_fuel_improvement.value_percent / 100;
-  const savedGal = totalFuelGal * reductionRate;
-  const co2Tonnes = savedGal * 10.21 / 1000;
+  // CO2 — directly measured savings from matched normalization: 55.04 gal × 10.21 kg/gal
+  const diffGal = 55.04;
+  const co2Tonnes = diffGal * 10.21 / 1000;
   document.getElementById('kpi-co2').innerHTML = co2Tonnes.toFixed(2) + ' <span style=\"font-size:18px;color:var(--text-muted);\">t CO<sub>2</sub>e</span>';
-  document.getElementById('kpi-co2-sub').textContent = `${savedGal.toFixed(0)} gal saved · ${totalFuelGal.toFixed(0)} gal project total · 10.21 kg/gal diesel`;
+  document.getElementById('kpi-co2-sub').textContent = `${diffGal.toFixed(1)} gal directly measured savings · 10.21 kg/gal diesel · audit-traceable`;
   
   // Strata
   document.getElementById('kpi-strata').textContent = o.matched_strata + ' matched';

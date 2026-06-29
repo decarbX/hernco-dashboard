@@ -341,7 +341,7 @@ function renderKPIs(data) {
   const diffGal = 55.04;
   const co2Tonnes = diffGal * 10.21 / 1000;
   document.getElementById('kpi-co2').innerHTML = co2Tonnes.toFixed(2) + ' <span style=\"font-size:18px;color:var(--text-muted);\">t CO<sub>2</sub>e</span>';
-  document.getElementById('kpi-co2-sub').textContent = `${diffGal.toFixed(1)} gal directly measured savings · 10.21 kg/gal diesel · audit-traceable`;
+  document.getElementById('kpi-co2-sub').textContent = `${diffGal.toFixed(1)} gal directly measured savings from ${o.baseline_fuel_gal.toFixed(1)} gal total baseline fuel consumption · 10.21 kg/gal diesel · audit-traceable`;
   
   // Strata
   document.getElementById('kpi-strata').textContent = o.matched_strata + ' matched';

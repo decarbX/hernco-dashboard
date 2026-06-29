@@ -144,9 +144,33 @@
   .source-bar .src strong { color: var(--text); }
   .source-bar .units { color: var(--text-muted); display: flex; gap: 16px; }
 
+  /* Glossary */
+  .glossary {
+    margin-top: 36px; padding: 24px 28px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .glossary h3 {
+    font-size: 12px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .glossary-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .glossary-item dt {
+    font-size: 11px; font-weight: 600; color: var(--text);
+    margin-bottom: 4px;
+    font-family: 'SF Mono', Monaco, monospace;
+  }
+  .glossary-item dd {
+    font-size: 11px; color: var(--text-muted);
+    line-height: 1.55; margin: 0;
+  }
+
   /* Footer */
   .footer {
-    margin-top: 40px; padding-top: 20px;
+    margin-top: 24px; padding-top: 20px;
     border-top: 1px solid var(--border);
     font-size: 11px; color: var(--text-muted);
     display: flex; justify-content: space-between;
@@ -156,6 +180,10 @@
     body { padding: 20px; }
     .kpi-grid { grid-template-columns: 1fr; }
     .status-grid { grid-template-columns: 1fr; }
+    .glossary-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .glossary-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -272,6 +300,29 @@
     <div class="kpi-value amber" id="kpi-strata" style="font-size:20px">—</div>
     <div class="kpi-sub" id="kpi-strata-sub">—</div>
   </div>
+</div>
+
+<!-- Glossary -->
+<div class="glossary">
+  <h3>Key Terms</h3>
+  <dl class="glossary-grid">
+    <div class="glossary-item">
+      <dt>Matched Strata</dt>
+      <dd>Operating states defined by PTO status, RPM band, and speed band. Groups telemetry into like-for-like conditions so baseline and optimized periods are compared within the same stratum.</dd>
+    </div>
+    <div class="glossary-item">
+      <dt>Normalization</dt>
+      <dd>Weighting the optimized period's fuel rate in each stratum by the baseline period's operating hours. Eliminates duty-cycle shift as a confounding factor. Answers: if the machine did the same work in both periods, how much fuel would it use?</dd>
+    </div>
+    <div class="glossary-item">
+      <dt>IFM Measured Fuel</dt>
+      <dd>Fuel volume measured directly by IFM SU6030 ultrasonic flow meters on the supply and return fuel circuits. Independent physical measurement, not derived from ECU estimates.</dd>
+    </div>
+    <div class="glossary-item">
+      <dt>t CO<sub>2</sub>e</dt>
+      <dd>Metric tonnes of carbon dioxide equivalent. 1 t CO<sub>2</sub>e = 1,000 kg. Calculated from measured diesel savings at 10.21 kg CO<sub>2</sub> per gallon (US EPA factor).</dd>
+    </div>
+  </dl>
 </div>
 
 <!-- Footer -->

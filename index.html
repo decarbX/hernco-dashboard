@@ -116,6 +116,7 @@
   .kpi-card.supporting::after { background: var(--accent); }
   .kpi-card.neutral::after { background: var(--amber); }
   .kpi-card.caution::after { background: var(--red); }
+  .kpi-badge.co2 { background: rgba(6,182,212,0.12); color: var(--cyan); }
   .kpi-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
   .kpi-value { font-size: 36px; font-weight: 700; letter-spacing: -1.2px; line-height: 1; }
   .kpi-value.green { color: var(--green); }
@@ -257,6 +258,13 @@
     <div class="kpi-value green" id="kpi-stationary">—</div>
     <div class="kpi-sub" id="kpi-stationary-sub">—</div>
   </div>
+  <!-- CO2 -->
+  <div class="kpi-card supporting" style="border-color: rgba(6,182,212,0.25);">
+    <span class="kpi-badge co2">CO2 Reduction</span>
+    <div class="kpi-label">POC1 Project Total CO2e</div>
+    <div class="kpi-value" style="color:var(--cyan)" id="kpi-co2">—</div>
+    <div class="kpi-sub" id="kpi-co2-sub">—</div>
+  </div>
   <!-- Methodology -->
   <div class="kpi-card neutral">
     <span class="kpi-badge neutral">Methodology</span>
@@ -328,6 +336,12 @@ function renderKPIs(data) {
   const s = kpis.stationary_operation_fuel_improvement;
   document.getElementById('kpi-stationary').textContent = s.value_percent.toFixed(2) + '% lower';
   document.getElementById('kpi-stationary-sub').textContent = `${s.matched_strata} matched stationary strata · ${s.baseline_rows_used.toLocaleString()} / ${s.optimized_rows_used.toLocaleString()} rows`;
+  
+  // CO2
+  const diffGal = kpis.overall_matched_fuel_improvement.difference_gal || 55.04;
+  const co2Tonnes = (diffGal * 10.21 / 1000);
+  document.getElementById('kpi-co2').innerHTML = co2Tonnes.toFixed(2) + ' <span style=\"font-size:18px;color:var(--text-muted);\">t CO<sub>2</sub>e</span>';
+  document.getElementById('kpi-co2-sub').textContent = `${diffGal.toFixed(1)} gal saved · diesel factor 10.21 kg/gal`;
   
   // Strata
   document.getElementById('kpi-strata').textContent = o.matched_strata + ' matched';

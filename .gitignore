@@ -1,0 +1,61 @@
+# hernco-dashboard — private production/customer repository
+# NEVER commit any of these file types
+
+# Credentials & secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.token
+credentials.*
+secrets.*
+*.secret
+
+# API tokens & config
+*api*token*
+*access_key*
+*secret_key*
+config.local.*
+.local.*
+
+# Raw telemetry data
+*.csv
+*.tsv
+data/
+telemetry/
+raw/
+exports/
+*.jsonld
+*.parquet
+
+# Customer data
+customer*/
+client*/
+tenant*/
+
+# Generated reports & output
+reports/
+output/
+*.log
+logs/
+*.out
+
+# Deployment passwords
+.deploy
+.passwords
+deploy.sh
+deploy.yml
+deploy.yaml
+
+# OS junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.tmp/
+tmp/

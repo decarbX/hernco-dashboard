@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRC REV POC1 — Operations Brief — v1.3 — June 25, 2026</title>
+<title>HRC REV POC1 ,  Operations Brief ,  v1.3 ,  June 25, 2026</title>
 <style>
   :root {
     --bg: #06080c;
@@ -70,7 +70,7 @@
     font-family: 'SF Mono', Monaco, monospace;
   }
 
-  /* Last known good (v1.2 — inside alert banner) */
+  /* Last known good (v1.2 ,  inside alert banner) */
   .last-known {
     margin-top: 14px; padding-top: 14px;
     border-top: 1px solid rgba(239,68,68,0.15);
@@ -111,7 +111,7 @@
   .kpi-unit { font-size: 15px; color: var(--text-muted); font-weight: 400; margin-left: 3px; }
   .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
 
-  /* Trend strip (v1.2 — below KPI grid) */
+  /* Trend strip (v1.2 ,  below KPI grid) */
   .trend-strip {
     display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 18px; margin-bottom: 36px; margin-top: -20px;
@@ -300,11 +300,27 @@
 <body>
 <div class="container">
 
+<!-- DCX500-MEASUREMENT-REVIEW-20261101 -->
+<section aria-labelledby="measurement-review-title" style="padding:24px;margin:0 0 30px;border:1px solid #f59e0b;border-radius:12px;background:#0f131c">
+  <div style="color:#f59e0b;font-size:12px;font-weight:700;letter-spacing:1px">INTERNAL REVIEW · NOVEMBER 1, 2026 · CALIBRATION HOLD</div>
+  <h2 id="measurement-review-title" style="margin:10px 0">DCX-500 measurement-first fuel accounting</h2>
+  <p>Review candidate saved locally. LLS6 may constrain total fuel across IFM gaps after independent validation. Current missing fuel remains unresolved; ECU is reference only.</p>
+  <p style="margin-top:12px">Verified: 25/25 evidence hashes, 14/14 refill anchors, 20 candidate tests and 32 existing tests. All 24 WEX records remain quarantined. No calibration release, merge or deployment.</p>
+  <nav aria-label="Fuel accounting review files" style="display:flex;flex-wrap:wrap;gap:18px;margin-top:18px">
+    <a style="color:#93c5fd" href=".local-reviews/measurement-first-2026-11-01/EXECUTIVE_DECISION_REPORT.txt">Executive decision report</a>
+    <a style="color:#93c5fd" href=".local-reviews/measurement-first-2026-11-01/MATHEMATICAL_CONTRACTS.txt">Mathematical contracts</a>
+    <a style="color:#93c5fd" href=".local-reviews/measurement-first-2026-11-01/DCX500-measurement-first-review.zip" download>Download complete review package</a>
+  </nav>
+  <p style="color:#aab4c4;font-size:12px;margin-top:16px">Local review files are excluded from Git. The historical dashboard below retains its existing dates and figures.</p>
+</section>
+<!-- END DCX500-MEASUREMENT-REVIEW-20261101 -->
+
+
 <!-- Hero -->
 <div class="hero">
   <div class="hero-left">
     <h1>HRC REV POC1</h1>
-    <div class="tagline">Hernco Revive08 · Station 1983 · decarbX GHGsolve</div>
+    <div class="tagline">Hernco Revive08 · Station 1983 · GHGsolve Intelligence Platform</div>
   </div>
   <div class="hero-right">
     <div class="pill alert">⚡ DERATE ACTIVE</div>
@@ -319,9 +335,9 @@
 <div class="alert-banner">
   <div class="alert-icon">🔴</div>
   <div class="alert-content">
-    <h3>Engine Derate — Asset Stationary Since June 24</h3>
+    <h3>Engine Derate ,  Asset Stationary Since June 24</h3>
     <p>
-      The Revive08 experienced a sudden ECM-commanded derate yesterday at approximately <strong>12:33 PM EDT</strong> while operating at highway speed (65 mph). Speed dropped to a hard electronic cap at <strong>10.6 mph</strong> with RPM locked at 800. As of today, the asset remains <strong>parked and unable to move</strong> — ignition is on but the engine is reporting zero RPM, zero fuel rate, and zero speed.
+      The Revive08 experienced a sudden ECM-commanded derate yesterday at approximately <strong>12:33 PM EDT</strong> while operating at highway speed (65 mph). Speed dropped to a hard electronic cap at <strong>10.6 mph</strong> with RPM locked at 800. As of today, the asset remains <strong>parked and unable to move</strong> ,  ignition is on but the engine is reporting zero RPM, zero fuel rate, and zero speed.
     </p>
     <div class="timeline">
       <span>12:16 PM: 65 mph highway</span>
@@ -458,45 +474,45 @@
   </div>
   <div class="pto-grid">
     <!-- Fuel per PTO Hour -->
-    <button class="pto-card" data-metric="fuel-per-pto-hour" aria-expanded="false" aria-label="Fuel per PTO Hour — click for analysis">
+    <button class="pto-card" data-metric="fuel-per-pto-hour" aria-expanded="false" aria-label="Fuel per PTO Hour ,  click for analysis">
       <div class="pto-label">
         Fuel per PTO Hour
-        <span class="q-dot low" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" title="CAN-only fuel estimate — IFM sensors non-functional"></span>
+        <span class="q-dot low" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" title="CAN-only fuel estimate ,  IFM sensors non-functional"></span>
       </div>
       <div class="pto-value">~3.2<span class="pto-unit">gal/PTO-hr</span></div>
       <div class="pto-context">1.4 PTO hrs today · est. 4.5 gal PTO fuel</div>
       <div class="pto-quality">
         <span class="q-dot low"></span>
-        <span class="q-text">CAN-only fuel estimate — IFM flow sensors non-functional</span>
+        <span class="q-text">CAN-only fuel estimate ,  IFM flow sensors non-functional</span>
       </div>
       <div class="pto-baseline">
         <span>vs 30-day baseline</span>
-        <span style="color:var(--text-muted)">— baseline building (3 of 5 days)</span>
+        <span style="color:var(--text-muted)">,  baseline building (3 of 5 days)</span>
       </div>
       <div class="pto-hint">▶ Click for trend &amp; analysis</div>
     </button>
 
     <!-- Fuel per PTO Turn -->
-    <button class="pto-card" data-metric="fuel-per-pto-turn" aria-expanded="false" aria-label="Fuel per PTO Turn — click for analysis">
+    <button class="pto-card" data-metric="fuel-per-pto-turn" aria-expanded="false" aria-label="Fuel per PTO Turn ,  click for analysis">
       <div class="pto-label">
         Fuel per PTO Turn
-        <span class="q-dot low" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" title="CAN-only fuel estimate — IFM sensors non-functional"></span>
+        <span class="q-dot low" style="width:7px;height:7px;border-radius:50%;background:var(--amber)" title="CAN-only fuel estimate ,  IFM sensors non-functional"></span>
       </div>
       <div class="pto-value">~1.8<span class="pto-unit">gal/turn</span></div>
       <div class="pto-context">~4 PTO cycles today · ~7.2 gal total PTO fuel</div>
       <div class="pto-quality">
         <span class="q-dot low"></span>
-        <span class="q-text">CAN-only — turn detection based on PTO state transitions</span>
+        <span class="q-text">CAN-only ,  turn detection based on PTO state transitions</span>
       </div>
       <div class="pto-baseline">
         <span>vs 30-day baseline</span>
-        <span style="color:var(--text-muted)">— baseline building (3 of 5 days required)</span>
+        <span style="color:var(--text-muted)">,  baseline building (3 of 5 days required)</span>
       </div>
       <div class="pto-hint">▶ Click for cycle breakdown &amp; analysis</div>
     </button>
   </div>
   <div class="pto-caveat">
-    ⚠️ PTO fuel metrics are preliminary estimates based on engine CAN bus data (ST910x). IFM SU6030 flow sensors are non-functional — supply/return flow, fuel temperature delta, and net fuel flow cannot be validated. Values are approximate and should not be used for billing or compliance reporting. Baseline is building; status labels require a minimum of 5 PTO-active days.
+    ⚠️ PTO fuel metrics are preliminary estimates based on engine CAN bus data (ST910x). IFM SU6030 flow sensors are non-functional ,  supply/return flow, fuel temperature delta, and net fuel flow cannot be validated. Values are approximate and should not be used for billing or compliance reporting. Baseline is building; status labels require a minimum of 5 PTO-active days.
   </div>
 </div>
 
@@ -517,7 +533,7 @@
     </div>
     <div class="quality-item">
       <div class="q-label">Engine CAN Bus (ST910x)</div>
-      <div class="q-val" style="color:var(--green)">OK — PRIMARY</div>
+      <div class="q-val" style="color:var(--green)">OK ,  PRIMARY</div>
     </div>
   </div>
   <div style="margin-top:12px;font-size:12px;color:var(--text-muted)">
@@ -528,7 +544,7 @@
 <!-- Footer -->
 <div class="footer">
   <div class="footer-col">
-    <div>Generated by decarbX GHGsolve AI · v1.3 · 2026-06-25 19:00 UTC</div>
+    <div>Prepared by decarbX GHGsolve AI Command Center · v1.3 · 2026-06-25 19:00 UTC</div>
     <div>Station 1983 (HRC REV POC1) · Engine CAN bus data via ST910x</div>
   </div>
   <div class="footer-col" style="text-align:right">
